@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 # 使用绝对导入，从 travel_agent 包中导入我们需要的模块和变量
 from travel_agent.llm_client import OpenAICompatibleClient
-from travel_agent.available_tools import available_tools
+from travel_agent.tools import tool_executor
 from travel_agent.prompt import AGENT_SYSTEM_PROMPT
 
 def main():
@@ -86,12 +86,10 @@ def main():
                 continue
 
             # 4. 执行工具
-            if tool_name in available_tools:
-                tool_function = available_tools[tool_name]
+            if tool_executor.has(tool_name):
                 try:
-                    tool_result = tool_function(**args)
+                    tool_result = tool_executor.execute(tool_name, **args)
                     print(f"工具 '{tool_name}' 已执行，结果: {tool_result}")
-                    # 将工具结果作为下一轮的输入
                     current_prompt = f"这是上次工具调用的结果: {tool_result}"
                 except Exception as e:
                     print(f"❌ 错误: 执行工具 '{tool_name}' 时出错: {e}")
