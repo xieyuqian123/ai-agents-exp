@@ -28,6 +28,8 @@ def main():
     os.environ['TAVILY_API_KEY'] = TAVILY_API_KEY
 
     # 初始化 LLM 客户端
+    # 参数现在是可选的，如果留空会自动从环境变量读取
+    # 这里我们演示显式传入（保持原样），或者您可以简化为 llm = OpenAICompatibleClient()
     llm = OpenAICompatibleClient(model=MODEL_ID, api_key=API_KEY, base_url=BASE_URL)
 
     # 定义用户的初始问题
