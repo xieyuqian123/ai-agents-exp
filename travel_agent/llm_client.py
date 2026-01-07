@@ -25,7 +25,7 @@ class OpenAICompatibleClient:
 
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
 
-    def generate(self, prompt: str, system_prompt: str, stream: bool = False) -> Union[str, Generator[str, None, None]]:
+    def generate(self, prompt: str, system_prompt: str, stream: bool = False, **kwargs) -> Union[str, Generator[str, None, None]]:
         """
         调用LLM API来生成回应。
         
@@ -33,6 +33,7 @@ class OpenAICompatibleClient:
             prompt: 用户的输入提示。
             system_prompt: 系统提示词。
             stream: 是否开启流式传输。默认为 False。
+            **kwargs: 其他传递给 API 的参数 (如 stop, temperature 等)
             
         Returns:
             如果 stream=False，返回完整的响应字符串。
@@ -48,7 +49,8 @@ class OpenAICompatibleClient:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
-                stream=stream
+                stream=stream,
+                **kwargs
             )
 
             if stream:
