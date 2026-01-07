@@ -35,6 +35,11 @@ class Solver:
         
         for i in range(max_turns):
             current_input = prompt + history
+            
+            # Force a wrap-up in the last turn
+            if i == max_turns - 1:
+                current_input += "\nObservation: You have reached the maximum number of turns. Please provide the Final Answer now based on what you have found so far.\n"
+
             response = self.llm.generate(
                 current_input, 
                 system_prompt="You are a capable solver.",
